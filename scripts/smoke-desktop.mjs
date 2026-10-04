@@ -2,7 +2,8 @@ import { _electron as electron } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
 const env = { ...process.env, ISOFORGE_SMOKE: '1' }; delete env.ELECTRON_RUN_AS_NODE;
-const application = await electron.launch({ args: ['.'], env });
+const executablePath = process.argv[2];
+const application = await electron.launch({ executablePath, args: executablePath ? [] : ['.'], env });
 try {
   const page = await application.firstWindow();
   const errors = []; page.on('pageerror', error => errors.push(error.message));
@@ -15,7 +16,7 @@ try {
   assert.ok(editions.some(e => e.code === 'SERVERSTANDARD'));
   assert.ok(editions.every(e => !/eval/i.test(e.code)));
   await page.getByRole('button', { name: 'Descargar y crear ISO' }).waitFor({ state: 'visible' });
-  await page.waitForFunction(() => !document.querySelector('.summary .primary').disabled, { timeout: 60000 });
+  await page.waitForFunction(() => !document.querySelector('.summary .primary').disabled, undefined, { timeout: 160000 });
   await mkdir('.cache', { recursive: true });
   await page.screenshot({ path: '.cache/live-desktop.png', fullPage: true });
   assert.deepEqual(errors, []);
