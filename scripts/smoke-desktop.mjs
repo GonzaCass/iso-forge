@@ -18,7 +18,7 @@ try {
   await page.getByRole('button', { name: 'Descargar y crear ISO' }).waitFor({ state: 'visible' });
   await page.waitForFunction(() => !document.querySelector('.summary .primary').disabled, undefined, { timeout: 160000 });
   await mkdir('.cache', { recursive: true });
-  await page.screenshot({ path: '.cache/live-desktop.png', fullPage: true });
+  if (!executablePath) await page.screenshot({ path: '.cache/live-desktop.png', fullPage: true });
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ desktop: 'OK', isolatedRenderer: true, liveCatalog: true, fullStandardEdition: true }));
+  console.log(JSON.stringify({ desktop: 'OK', packaged: !!executablePath, isolatedRenderer: true, liveCatalog: true, fullStandardEdition: true }));
 } finally { await application.close(); }
