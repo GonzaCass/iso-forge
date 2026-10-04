@@ -1,0 +1,59 @@
+{
+  "name": "iso-forge",
+  "version": "0.1.0",
+  "description": "Windows ISO downloader and builder with Microsoft UUP sources",
+  "author": "ISO Forge contributors",
+  "license": "MIT",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "desktop": "npm run build && electron .",
+    "build": "tsc --noEmit && vite build",
+    "test": "node --test tests/*.test.mjs",
+    "test:ui": "playwright test",
+    "package:win": "npm run build && electron-builder --win portable --publish never"
+  },
+  "build": {
+    "appId": "io.isoforge.desktop",
+    "productName": "ISO Forge",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "core/**/*",
+      "package.json",
+      "assets/icon.png",
+      "LICENSE",
+      "docs/THIRD_PARTY.md"
+    ],
+    "win": {
+      "target": "portable",
+      "signExecutable": false,
+      "icon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "ISO-Forge-${version}-Windows-x64.exe"
+    }
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "fast-xml-parser": "^5.11.2",
+    "lucide-react": "^1.52.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2"
+  }
+}
