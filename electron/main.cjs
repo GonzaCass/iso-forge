@@ -37,7 +37,7 @@ app.whenReady().then(async () => {
   });
   session.defaultSession.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
   window = new BrowserWindow({ width: 1360, height: 920, minWidth: 860, minHeight: 700, show: process.env.ISOFORGE_SMOKE !== '1',
-    backgroundColor: '#0f172a', title: 'ISO Forge', icon: path.join(__dirname, '../assets/icon.png'), autoHideMenuBar: true,
+    backgroundColor: '#1c1c1c', title: 'ISO Forge', icon: path.join(__dirname, '../assets/icon.png'), autoHideMenuBar: true,
     webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true } });
   window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   window.webContents.on('will-navigate', (event, url) => { if (!url.startsWith(localHost + '/')) event.preventDefault(); });
@@ -45,10 +45,10 @@ app.whenReady().then(async () => {
     if (!manager.busy) return;
     event.preventDefault();
     if (['converting', 'verifying'].includes(manager.state.phase)) {
-      dialog.showMessageBoxSync(window, { type: 'info', message: 'La ISO se esta creando.', detail: 'Espera a que termine la conversion antes de cerrar la app.' }); return;
+      dialog.showMessageBoxSync(window, { type: 'info', message: 'Conversion en curso.', detail: 'El cierre permanece bloqueado durante la conversion y la verificacion.' }); return;
     }
     const answer = dialog.showMessageBoxSync(window, { type: 'question', buttons: ['Seguir descargando', 'Pausar y cerrar'], defaultId: 0, cancelId: 0,
-      message: 'Hay una descarga en curso.', detail: 'Si la pausas se conservaran los paquetes para reanudar.' });
+      message: 'Hay una descarga en curso.', detail: 'La pausa conserva los paquetes descargados para reanudar.' });
     if (answer === 1) { manager.pause(); setTimeout(() => { if (!manager.busy) window.destroy(); }, 1500); }
   });
   handle('initialize', () => ({ preferences, history, state: manager.state, version: app.getVersion(), products: catalog.PRODUCTS.map(({ match, ...p }) => p) }));
@@ -56,7 +56,7 @@ app.whenReady().then(async () => {
   handle('languages', id => catalog.languages(id));
   handle('editions', (id, lang) => catalog.editions(id, lang));
   handle('directory', async () => {
-    const result = await dialog.showOpenDialog(window, { title: 'Donde guardar las ISOs', defaultPath: preferences.directory, properties: ['openDirectory', 'createDirectory'] });
+    const result = await dialog.showOpenDialog(window, { title: 'Directorio de salida', defaultPath: preferences.directory, properties: ['openDirectory', 'createDirectory'] });
     if (result.canceled) return null;
     const directory = result.filePaths[0];
     if (/[!%&|<>^\r\n]/.test(directory)) throw new Error('La carpeta no puede contener ! % & | < > ^.');
@@ -64,7 +64,7 @@ app.whenReady().then(async () => {
     return directory;
   });
   handle('start', selection => {
-    if (!selection || !allowedDirectories.has(selection.directory) || typeof selection.updates !== 'boolean') throw new Error('Elegi primero una carpeta de destino.');
+    if (!selection || !allowedDirectories.has(selection.directory) || typeof selection.updates !== 'boolean') throw new Error('Directorio de salida no seleccionado.');
     if (manager.busy) throw new Error('Ya hay una descarga en curso.');
     void manager.start(selection).catch(error => manager.update({ phase: 'error', error: error.message })); return true;
   });

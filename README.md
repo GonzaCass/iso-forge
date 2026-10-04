@@ -6,17 +6,17 @@ Una app de escritorio para descargar paquetes de Windows desde Microsoft y conve
 
 ## Descargar y usar
 
-Descargá **ISO-Forge-0.1.0-Windows-x64.exe** desde [Releases](https://github.com/GonzaCass/iso-forge/releases). Es portable: no necesitás instalar Node, Python ni Fido.
+Ejecutable portable: **ISO-Forge-0.1.1-Windows-x64.exe**, disponible en [Releases](https://github.com/GonzaCass/iso-forge/releases). No requiere instalación de Node, Python ni Fido.
 
-Esta primera versión no tiene firma digital de editor.
+El ejecutable no tiene firma digital de editor.
 
-1. Elegí Windows Server, Windows 11 o Windows 10.
-2. Seleccioná compilación, idioma y edición disponibles en el catálogo.
-3. Elegí una carpeta con espacio libre. Calculá al menos 30–40 GiB para paquetes, medio temporal y verificaciones; algunas compilaciones requieren más.
-4. Presioná **Descargar y crear ISO**. Para conversiones avanzadas, aceptá el permiso de administrador de Windows.
-5. Abrí **Mis ISOs** para encontrar el archivo terminado, la versión real de la imagen y su SHA-256.
+1. Selección de Windows Server, Windows 11 o Windows 10.
+2. Selección de compilación, idioma y edición del catálogo.
+3. Directorio de salida con al menos 30–40 GiB libres para paquetes, medio temporal y verificaciones. Algunas compilaciones requieren más espacio.
+4. Inicio mediante **Descargar y crear ISO**. La conversión avanzada requiere autorización de administrador en Windows.
+5. Consulta del archivo terminado, la versión real de la imagen y su SHA-256 en **Imágenes ISO**.
 
-Se solicita el canal **Retail** y se rechazan ediciones Evaluation tanto en el catálogo como en los metadatos de la imagen. La app no incluye licencias, claves ni activadores. Activá después la edición instalada con una licencia compatible.
+Se solicita el canal **Retail** y se rechazan ediciones Evaluation tanto en el catálogo como en los metadatos de la imagen. La app no incluye licencias, claves ni activadores. La activación posterior requiere una licencia compatible con la edición instalada.
 
 ## Disponibilidad y alcance
 
@@ -60,7 +60,7 @@ El ejecutable queda en `release/`. `npm run dev` abre únicamente la vista previ
 
 ## Diseño
 
-Dirección visual basada en [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): Dark Mode (OLED), referencias de dashboard y Bento Grid, IBM Plex Sans + JetBrains Mono. Fuentes locales, iconos Lucide, foco visible, formularios etiquetados y adaptación a pantallas pequeñas. Las decisiones están documentadas en `design-system/iso-forge/`.
+Referencias de [UI/UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), adaptadas a una utilidad de escritorio: grises, acento oliva, bordes rectos, controles compactos y texto técnico impersonal. IBM Plex Sans + JetBrains Mono. Fuentes locales, iconos Lucide, foco visible, formularios etiquetados y adaptación a pantallas pequeñas. Las decisiones están documentadas en `design-system/iso-forge/`.
 
 ## Estado de validación
 

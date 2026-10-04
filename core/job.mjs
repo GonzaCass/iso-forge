@@ -19,7 +19,7 @@ export function assertEdition(images, requested, { single = false } = {}) {
   }
   if (!operatingSystems.some(i => i.WINDOWS.EDITIONID.toUpperCase() === requested.toUpperCase())
     || (single && operatingSystems.some(i => i.WINDOWS.EDITIONID.toUpperCase() !== requested.toUpperCase()))) {
-    throw new Error('La edicion de la imagen no coincide con tu seleccion.');
+    throw new Error('La edicion de la imagen no coincide con la seleccion.');
   }
   return operatingSystems;
 }
@@ -60,7 +60,7 @@ export function installImageInListing(listing) {
 export class JobManager {
   constructor({ cache, emit, saveHistory }) {
     this.cache = cache; this.emit = emit; this.saveHistory = saveHistory;
-    this.state = { phase: 'idle', message: 'Listo para empezar', progress: 0, logs: [] };
+    this.state = { phase: 'idle', message: 'Sin tareas activas', progress: 0, logs: [] };
   }
   update(patch) { this.state = { ...this.state, ...patch }; this.emit(this.state); }
   log(message) { this.update({ message, logs: [...this.state.logs.slice(-149), { time: new Date().toISOString(), message }] }); }
@@ -74,7 +74,7 @@ export class JobManager {
     if (!UUID.test(selection.id) || !/^[a-z]{2}-[a-z]{2}$/i.test(selection.lang)
       || !/^[a-z0-9]+$/i.test(selection.edition) || isEvaluation(selection.edition)) throw new Error('Seleccion invalida.');
     if (!selection.directory || /[!%&|<>^\r\n]/.test(selection.directory)) {
-      throw new Error('Elegi una carpeta sin caracteres ! % & | < > ^ para las herramientas de Windows.');
+      throw new Error('El directorio de salida no admite los caracteres ! % & | < > ^.');
     }
     this.busy = true; this.controller = new AbortController();
     const signal = this.controller.signal;
@@ -138,7 +138,7 @@ export class JobManager {
         const { createServer2022 } = await import('./server2022.mjs');
         await createServer2022({ esd: join(uups, metadataFile.name), tools, folder, lang: selection.lang, log: message => this.log(message) });
       } else {
-        this.log('Acepta la solicitud de administrador de Windows para crear la ISO.');
+        this.log('Conversion pendiente de autorizacion de administrador en Windows.');
         await powershell(`$ErrorActionPreference='Stop'; $p=Start-Process -FilePath ${psQuote(converter)} -WorkingDirectory ${psQuote(folder)} -Verb RunAs -WindowStyle Hidden -Wait -PassThru; if($p.ExitCode -ne 0){throw ('Conversion fallo: '+$p.ExitCode)}`);
       }
       this.update({ phase: 'verifying', progress: undefined });
@@ -149,7 +149,7 @@ export class JobManager {
           if (s.size > 100 * 1024 * 1024 && s.mtimeMs !== previousIsos.get(name)) candidates.push({ name, mtime: s.mtimeMs }); }
       }
       candidates.sort((a, b) => b.mtime - a.mtime);
-      if (!candidates.length) throw new Error('El conversor no produjo una ISO nueva. Revisa el log en la carpeta de trabajo.');
+      if (!candidates.length) throw new Error('El conversor no produjo una ISO nueva. Detalles disponibles en el log de la carpeta de trabajo.');
       const iso = join(folder, candidates[0].name);
       const boot = await verifyBoot(iso);
       const sevenZip = join(folder, 'bin', '7z.exe');

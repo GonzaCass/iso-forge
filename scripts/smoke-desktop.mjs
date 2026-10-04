@@ -1,6 +1,7 @@
 import { _electron as electron } from 'playwright';
 import assert from 'node:assert/strict';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
+const { version } = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
 const env = { ...process.env, ISOFORGE_SMOKE: '1' }; delete env.ELECTRON_RUN_AS_NODE;
 const executablePath = process.argv[2];
 const application = await electron.launch({ executablePath, args: executablePath ? [] : ['.'], env });
@@ -10,7 +11,7 @@ try {
   await page.waitForURL('isoforge://app/index.html');
   await page.getByRole('button', { name: 'Descargar y crear ISO' }).waitFor({ state: 'visible' });
   const initial = await page.evaluate(() => window.forge.initialize());
-  assert.equal(initial.version, '0.1.0');
+  assert.equal(initial.version, version);
   assert.equal(await page.evaluate(() => typeof require), 'undefined');
   const editions = await page.evaluate(() => window.forge.editions('28d299dc-8bad-471b-88e7-4fd84e79ac2c', 'es-es'));
   assert.ok(editions.some(e => e.code === 'SERVERSTANDARD'));

@@ -1,4 +1,18 @@
-# Validación de v0.1.0
+# Validación
+
+## v0.1.1
+
+Texto de la interfaz, diálogos, errores y manual revisado con redacción técnica e impersonal.
+Presentación compacta con grises, acento oliva y bordes rectos; sin bloques promocionales
+ni ilustración decorativa del disco.
+
+- TypeScript y compilación Vite: correctos.
+- 14 pruebas del motor: correctas; los cambios en el motor afectan únicamente los mensajes.
+- 5 pruebas de interfaz con Playwright/Edge: correctas. Selección, descarga y pausa;
+  estados vacíos y documentación; ausencia de desbordamiento a 375, 768 y 1360 px.
+- Capturas de 375 y 1360 px revisadas visualmente.
+
+## v0.1.0
 
 - TypeScript y compilación Vite: correctos.
 - 14 pruebas del motor: descarga verificada, reanudación Range, servidor que ignora Range, rango incorrecto, paquete incompleto, SHA-256 incorrecto, hosts de Microsoft, nombres de archivo, metadatos XML, rechazo Evaluation, reconocimiento de la imagen en la ISO y reintentos del catálogo.

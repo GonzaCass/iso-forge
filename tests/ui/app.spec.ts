@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
     (window as any).__selection = null;
     (window as any).__emit = (state: any) => callback(state);
     (window as any).forge = {
-      initialize: async () => ({ preferences: { directory: 'E:\\ISOs' }, history: [], state: { phase: 'idle', message: 'Listo', logs: [], progress: 0 }, version: '0.1.0' }),
+      initialize: async () => ({ preferences: { directory: 'E:\\ISOs' }, history: [], state: { phase: 'idle', message: 'Listo', logs: [], progress: 0 }, version: '0.1.1' }),
       builds: async () => [{ uuid: id, title: 'Feature update to Microsoft server operating system', build: '20348.5622', arch: 'amd64', created: 1788887002 }],
       languages: async () => ({ items: [{ code: 'es-es', name: 'Spanish' }, { code: 'en-us', name: 'English' }], info: { ring: 'RETAIL' } }),
       editions: async () => [{ code: 'SERVERSTANDARD', name: 'Windows Server Standard' }, { code: 'SERVERSTANDARDCORE', name: 'Windows Server Standard, Core' }],
@@ -34,11 +34,11 @@ test('selection, destination, download progress and pause work together', async 
   await expect(page.getByRole('heading', { name: 'Descarga pausada' })).toBeVisible();
 });
 test('library and documentation show real empty states and source links', async ({ page }) => {
-  await page.goto('/'); await page.getByRole('button', { name: 'Mis ISOs', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Acá van tus ISOs.' })).toBeVisible();
-  await page.getByRole('button', { name: 'Cómo funciona', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Qué versiones puedo bajar' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'UI/UX Pro Max' })).toBeVisible();
+  await page.goto('/'); await page.getByRole('button', { name: 'Imágenes ISO', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Sin imágenes registradas' })).toBeVisible();
+  await page.getByRole('button', { name: 'Documentación', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Versiones disponibles' })).toBeVisible();
+  await expect(page.locator('.help-links').getByRole('button', { name: 'UUP dump', exact: true })).toBeVisible();
 });
 for (const width of [375, 768, 1360]) {
   test(`catalog has no horizontal overflow at ${width}px`, async ({ page }) => {

@@ -1,6 +1,6 @@
 {
   "name": "iso-forge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Windows ISO downloader and builder with Microsoft UUP sources",
   "author": "ISO Forge contributors",
   "license": "MIT",

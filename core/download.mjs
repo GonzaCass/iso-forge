@@ -49,7 +49,7 @@ export async function downloadFile(file, destination, { signal, onProgress = () 
     }
     break;
   }
-  if (![200, 206].includes(response.status) || !response.body) throw new Error(`Descarga HTTP ${response.status}. Reintenta para renovar los enlaces.`);
+  if (![200, 206].includes(response.status) || !response.body) throw new Error(`Descarga HTTP ${response.status}. El reinicio de la tarea renueva los enlaces.`);
   if (response.status === 206) {
     const range = /^bytes (\d+)-(\d+)\/(\d+)$/.exec(response.headers.get('content-range') ?? '');
     if (!range || Number(range[1]) !== offset || Number(range[3]) !== file.size) {
